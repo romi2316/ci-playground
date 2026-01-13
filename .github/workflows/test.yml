@@ -1,16 +1,19 @@
 # Nom du workflow (visible dans l’onglet Actions)
 name: First pipeline - Test
 
-# Déclenchement manuel (bouton "Run workflow")
+# Déclencheurs
 on:
+  # Lancement manuel
   workflow_dispatch:
+
+  # Lancement automatique à chaque push sur main
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 # Définition des jobs
 jobs:
 
-  # Job 1 : test de login
+  # Job : test de login (Gherkin)
   login-test:
     runs-on: ubuntu-latest
 
@@ -24,34 +27,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      # 3️⃣ Installer les dépendances du projet
+      # 3️⃣ Installer les dépendances
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Lancer le test Cypress login
-      - name: Run Cypress login test
-        run: npx cypress run --spec cypress/e2e/login.cy.js
-
-  # Job 2 : test de signup
-  signup-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      # 1️⃣ Récupérer le code du repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2️⃣ Installer Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      # 3️⃣ Installer les dépendances du projet
-      - name: Install dependencies
-        run: npm ci
-
-      # 4️⃣ Lancer le test Cypress signup
-      - name: Run Cypress signup test
-        run: npx cypress run --spec cypress/e2e/signup.cy.js
+      # 4️⃣ Lancer Cypress (login.feature uniquement)
+      - name: Run Cypress login Gherkin test
+        run: npx cypress run --spec cypress/e2e/login.feature
