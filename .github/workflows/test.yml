@@ -1,0 +1,22 @@
+name: first pipline - Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      # 1) Récupère le code
+      - uses: actions/checkout@v4
+
+      # 2) Un test “Hello” pour vérifier que ça tourne
+      - name: Print hello
+        run: echo "Hello from GitHub Actions!"
+
+      # 3) Affiche des infos utiles
+      - name: Show environment
+        run: |
+          node -v || true
+          npm -v || true
+          uname -a
