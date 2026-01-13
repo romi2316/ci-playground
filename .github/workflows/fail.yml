@@ -1,0 +1,21 @@
+name: Training - Failure demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fail-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Step OK
+        run: echo "Ce step passe ✅"
+
+      - name: Force failure
+        run: |
+          echo "Maintenant je force un échec ❌"
+          exit 1
+
+      - name: This will NOT run
+        run: echo "Tu ne verras jamais ce message"
