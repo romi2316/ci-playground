@@ -1,23 +1,57 @@
-name: first pipline - Test
+# Nom du workflow (visible dans l’onglet Actions)
+name: First pipeline - Test
 
+# Déclenchement manuel (bouton "Run workflow")
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+
+# Définition des jobs
 jobs:
-  hello:
+
+  # Job 1 : test de login
+  login-test:
     runs-on: ubuntu-latest
+
     steps:
-      # 1) Récupère le code
-      - uses: actions/checkout@v4
+      # 1️⃣ Récupérer le code du repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 2) Un test “Hello” pour vérifier que ça tourne
-      - name: Print hello
-        run: echo "Hello from GitHub Actions!"
+      # 2️⃣ Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-      # 3) Affiche des infos utiles
-      - name: Show environment
-        run: |
-          node -v || true
-          npm -v || true
-          uname -a
+      # 3️⃣ Installer les dépendances du projet
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Lancer le test Cypress login
+      - name: Run Cypress login test
+        run: npx cypress run --spec cypress/e2e/login.cy.js
+
+  # Job 2 : test de signup
+  signup-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code du repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Installer les dépendances du projet
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Lancer le test Cypress signup
+      - name: Run Cypress signup test
+        run: npx cypress run --spec cypress/e2e/signup.cy.js
