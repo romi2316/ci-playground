@@ -4,7 +4,8 @@ name: First pipeline - Test
 # Déclenchement manuel (bouton "Run workflow")
 on:
   workflow_dispatch:
-
+  push:
+    branches: [ "main" ]
 # Définition des jobs
 jobs:
 
