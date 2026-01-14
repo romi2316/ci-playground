@@ -7,5 +7,5 @@ Feature: signup
 
   @critique  
   Scenario: User visits the signup page
-    Given I open the signup page
-    Then I fill the signup form
+    Given I open the signup page 2
+    Then I fill the signup form 2
