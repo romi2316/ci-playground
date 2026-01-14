@@ -9,6 +9,10 @@ on:
   # Lancement automatique à chaque push sur main
   push:
     branches: ["main"]
+    
+    # 🌙 Lancement nightly (tous les jours à 02:00 UTC)
+  schedule:
+    - cron: "0 2 * * *"
 
 # Définition des jobs
 jobs:
