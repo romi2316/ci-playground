@@ -6,6 +6,6 @@ Feature: signup
     Then I fill the signup form
 
   @critique  
-  Scenario: User visits the signup page
+  Scenario: User visits the signup page 2
     Given I open the signup page 2
     Then I fill the signup form 2
