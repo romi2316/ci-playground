@@ -35,4 +35,4 @@ jobs:
 
       # 4️⃣ Lancer Cypress (login.feature uniquement)
       - name: Run Cypress login Gherkin test
-        run: npx cypress run --spec cypress/e2e/login.feature
+        run: npx cypress run --spec cypress/e2e/features/login.feature
