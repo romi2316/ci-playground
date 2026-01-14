@@ -7,6 +7,6 @@ Given("I open the login page", () => {
 Then("I fill the login form", () => {
   cy.get("#emailLogin").type("test@test.com");
   cy.get("#passwordLogin").type("password123");
-  cy.get("#loginBtn").submit();
+  cy.get("#loginBtn").click();
 });
 
