@@ -1,0 +1,38 @@
+# Nom du workflow
+name: Cypress Tests
+
+# Déclencheurs
+on:
+  # À chaque push sur main
+  push:
+    branches: ["main"]
+
+  # (optionnel mais recommandé) À chaque Pull Request
+  pull_request:
+
+  # Lancement manuel possible
+  workflow_dispatch:
+
+jobs:
+  signup-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code du repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3️⃣ Installer les dépendances
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Lancer Cypress (chemin fichier de test :login.feature uniquement)
+      - name: Run Cypress login Gherkin test
+        run: npx cypress run --spec cypress/e2e/features/signup.feature
