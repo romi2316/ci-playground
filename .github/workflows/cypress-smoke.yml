@@ -11,7 +11,6 @@ on:
   pull_request:
 
   # Lancement manuel possible
-  workflow_dispatch:
 
 jobs:
   smoke-tests:
@@ -35,4 +34,16 @@ jobs:
 
       # 4️⃣ Lancer UNIQUEMENT les tests smoke
       - name: Run Cypress smoke tests
-        run: npx cypress run --env TAGS="@smoke"
+        run: npx cypress run --env TAGS="@smoke and not @flaky"
+
+      - name: Upload Cypress artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+
+
+

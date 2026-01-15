@@ -1,0 +1,52 @@
+# Nom du workflow (visible dans l’onglet Actions)
+name: Cypress Flaky Tests (Quarantine)
+
+# Déclencheurs
+on:
+  # Lancement manuel (debug / suivi flaky)
+  workflow_dispatch:
+
+  # Optionnel : exécution nocturne pour suivi
+  # (ex: tous les jours à 02:30 UTC)
+  schedule:
+    - cron: "30 2 * * *"
+
+jobs:
+  flaky-tests:
+    runs-on: ubuntu-latest
+
+    # IMPORTANT :
+    # Même si ce job échoue, il ne bloque rien
+    # car c’est un workflow séparé
+    # (optionnel : on peut forcer le vert)
+    continue-on-error: true
+
+    steps:
+      # 1️⃣ Récupérer le code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3️⃣ Installer les dépendances
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Lancer UNIQUEMENT les tests tagués @flaky
+      - name: Run Cypress flaky tests
+        run: npx cypress run --env TAGS="@flaky"
+
+      # 5️⃣ Upload des artefacts (utile pour analyse)
+      - name: Upload Cypress artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-flaky-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos

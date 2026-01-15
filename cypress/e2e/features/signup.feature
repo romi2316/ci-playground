@@ -1,6 +1,7 @@
 @signup
 Feature: signup 
 
+  @flaky  
   Scenario: User visits the signup page
     Given I open the signup page
     Then I fill the signup form

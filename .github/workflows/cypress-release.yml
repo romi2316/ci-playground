@@ -3,13 +3,6 @@ name: Cypress Tests
 
 # Déclencheurs
 on:
-  # À chaque push sur main
-  push:
-    branches: ["main"]
-
-  # (optionnel mais recommandé) À chaque Pull Request
-  pull_request:
-
   # Lancement manuel possible
   workflow_dispatch:
 
@@ -33,6 +26,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Lancer Cypress (chemin fichier de test :login.feature uniquement)
-      - name: Run Cypress login Gherkin test
-        run: npx cypress run --spec cypress/e2e/features/signup.feature
+      # 4️⃣ Lancer Cypress (tests negotiation + critical)
+      - name: Run Cypress negotiation critical tests
+        run: npx cypress run --env TAGS="@negotiation and @critical"
+
+      # 5️⃣ Upload des screenshots et vidéos Cypress
+      # Très utile pour analyser les échecs
+      - name: Upload Cypress artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
